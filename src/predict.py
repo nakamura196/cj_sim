@@ -82,5 +82,5 @@ for file_index in range(len(files)):
 
         arr.append(obj)
 
-    f2 = open('/Users/nakamura/git/d_jps/cj_sim/docs/json/'+id+'.json', 'w')
+    f2 = open('../data/'+id+'.json', 'w')
     json.dump(arr, f2)

@@ -6,7 +6,7 @@ import csv
 bucket_name = "cultural-jp"
 s3 = boto3.resource('s3')
 
-files = glob.glob("../docs/json/*.json")
+files = glob.glob("../data/*.json")
 
 for i in range(len(files)):
     file = files[i]
