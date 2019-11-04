@@ -18,50 +18,23 @@ def download_img(url, file_name):
             r.raw.decode_content = True
             shutil.copyfileobj(r.raw, f)
 
-with open('/Users/nakamura/git/d_jps/cj/src/cobas/data/list.csv', 'r') as f:
-    reader = csv.reader(f)
-    header = next(reader)  # ヘッダーを読み飛ばしたい時
+# list_path = '/Users/nakamura/git/d_jps/cj/src/europeana/data/list.json'
+list_path = '/Users/nakamura/git/d_jps/cj/src/lda/data/list.json'
 
-    count = 1
+with open(list_path) as f:
+    df = json.load(f)
 
-    for row in reader:
-        uri = row[0]
+for i in range(len(df)):
+    obj = df[i]
 
-        name = uri.split("/")[-1]
-        print(str(count)+"\t"+name)
+    url = obj["image"]
 
-        count += 1
+    name = obj["_id"] #.split("/")[-1].split("#")[0]
+    print(str(i+1)+"/"+str(len(df))+"\t"+name)
 
-        opath = "../images/"+name+".jpg"
+    opath = "../images/"+name+".jpg"
 
-        if os.path.exists(opath):
-            continue
+    if os.path.exists(opath):
+        continue
 
-        try:
-
-            endpoint = "https://jpsearch.go.jp/rdf/sparql"
-
-            # time.sleep(0)
-
-            sparql = SPARQLWrapper(endpoint=endpoint, returnFormat='json')
-            q = ("""
-                DESCRIBE <"""+uri+""">
-            """)
-            sparql.setQuery(q)
-
-            url = endpoint+"?query="+urllib.parse.quote(q)+"&format=json&output=json&results=json"
-
-            r = requests.get(url)
-            results = json.loads(r.text)["results"]["bindings"]
-
-            for obj in results:
-                if obj["p"]["value"] == "http://schema.org/image":
-                    url = obj["o"]["value"]
-
-                    download_img(url, opath)
-
-                    break
-        
-        except:
-            time.sleep(0.5)
-            print("Error")
+    download_img(url, opath)
