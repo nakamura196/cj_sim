@@ -2,13 +2,14 @@ import json
 import boto3
 import glob
 import csv
+import time
 
 bucket_name = "cultural-jp"
 s3 = boto3.resource('s3')
 
 files = glob.glob("../images/europeana-*.jpg")
 
-path_w = 'list.csv'
+path_w = 'uploaded_list.csv'
 
 rows = []
 
@@ -37,9 +38,5 @@ for i in range(len(files)):
         with open(path_w, mode='a') as f:
             f.write(filename+"\n")
     except:
+        time.sleep(0.5)
         print("Error")
-
-    '''
-    if i > 5:
-        break
-    '''

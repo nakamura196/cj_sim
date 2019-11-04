@@ -3,6 +3,7 @@ import glob
 from annoy import AnnoyIndex
 from scipy import spatial
 import json
+import os
 
 ## メタデータのロード ##
 
@@ -41,11 +42,19 @@ for file_index in range(len(files)):
 
     file = files[file_index]
 
+    id = file.split("/")[-1].split(".")[0]
+
+    opath = '../data/'+id+'.json'
+
+    if os.path.exists(opath):
+        continue
+
+    print(str(file_index)+"/"+str(len(files)))
+
     master_vector = numpy.load(file)
 
     nearest_neighbors = t.get_nns_by_vector(master_vector, n_nearest_neighbors)
     
-    id = file.split("/")[-1].split(".")[0]
 
     arr = []
 
@@ -66,7 +75,7 @@ for file_index in range(len(files)):
 
         id2 = neighbor_file_name.split(".")[0]
         if id2 not in map:
-            print("- "+id2)
+            # print("- "+id2)
             continue
         
         obj2 = map[id2]
@@ -82,5 +91,5 @@ for file_index in range(len(files)):
 
         arr.append(obj)
 
-    f2 = open('../data/'+id+'.json', 'w')
+    f2 = open(opath, 'w')
     json.dump(arr, f2)
