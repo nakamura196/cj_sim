@@ -25,8 +25,8 @@ d = 20
 for i in range(len(files)):
     file = files[i]
 
-    if i % d == 0:
-        print(str(i+1)+"/"+str(len(files)))
+    # if i % d == 0:
+    print(str(i+1)+"/"+str(len(files)))
 
     filename = file.split("/")[-1]
 
