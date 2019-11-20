@@ -1,5 +1,4 @@
-cd /Users/nakamura/git/d_jps/cj/src/sim
-python process_images.py
+python 03_process_images.py
 # aws s3 sync ../europeana/data/images s3://cultural-jp
 # aws s3 cp ../data s3://cultural-jp/json/ --recursive
 python sim.py
