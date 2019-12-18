@@ -9,7 +9,7 @@ s3 = boto3.resource('s3')
 
 files = glob.glob("../data/*.json")
 
-path_w = 'uploaded_list_json.csv'
+path_w = 'data/uploaded_list_json.csv'
 
 rows = []
 
@@ -25,10 +25,14 @@ d = 20
 for i in range(len(files)):
     file = files[i]
 
-    # if i % d == 0:
-    print(str(i+1)+"/"+str(len(files)))
-
     filename = file.split("/")[-1]
+
+    url = "https://nakamura196.github.io/cj2/#/item?id="+filename.replace(".json", "")
+
+    # if i % d == 0:
+    print(str(i+1)+"/"+str(len(files))+"\t"+url)
+
+    
 
     if filename not in rows:
 

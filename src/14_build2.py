@@ -17,6 +17,7 @@ files = glob.glob(image_vectors_path+"/*.npy")
 map = {}
 
 features = []
+count = 0
 
 for file_index in range(len(files)):
     # print(file_index)
@@ -31,16 +32,47 @@ for file_index in range(len(files)):
     try:
         file_vector = numpy.load(files[file_index])
         t.add_item(file_index, file_vector)
-        map[file_index] = id
+        
 
         features.append(file_vector)
+
+        map[count] = id
+
+        count += 1
+
     except:
         print("err\t"+file)
 
 t.build(trees)
 t.save('data/test.ann') # モデルを保存することも可能です。
 
+n_nearest_neighbors = 20
+
+result = {}
+
+for file_index in map:
+    file_vector = features[file_index]
+
+    nearest_neighbors = t.get_nns_by_vector(file_vector, n_nearest_neighbors)
+
+    arr = []
+
+    id = map[file_index]
+
+    for j in nearest_neighbors:
+
+        id2 = map[j]
+        arr.append(id2)
+
+    result[id] = arr
+
+
+'''
 f2 = open('data/file_index_map.json', 'w')
 json.dump(map, f2)
 
 numpy.save('data/features.npy', features)
+'''
+
+f2 = open('data/result.json', 'w')
+json.dump(result, f2)

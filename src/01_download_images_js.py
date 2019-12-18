@@ -21,8 +21,8 @@ def download_img(url, file_name):
 # list_path = '/Users/nakamura/git/d_jps/cj/src/europeana/data/list.json'
 # list_path = '/Users/nakamura/git/d_jps/cj/src/lda/data/list.json'
 # list_path = '/Users/nakamura/git/d_jps/cj/src/dpla/data/list.json'
-list_path = '/Users/nakamura/git/d_jps/cj/src/all/data/list.json'
-# list_path = '/Users/nakamura/git/d_jps/cj/src/js/data/list.json'
+# list_path = '/Users/nakamura/git/d_jps/cj/src/all/data/list.json'
+list_path = '/Users/nakamura/git/d_jps/cj/src/js/data/list.json'
 
 with open(list_path) as f:
     df = json.load(f)
@@ -34,16 +34,15 @@ for i in range(len(df)):
 
     # print("url\t"+url)
 
-    if url == "":
-        continue
-
-    name = obj["_id"].split("/")[-1]
+    name = obj["_id"].split("/")[-1].split("#")[0]
 
     if i % 100 == 0:
         print(str(i+1)+"/"+str(len(df))+"\t"+name)
 
-    if "ku-orcas" in name:
-        # print(name)
+    if "dignl" in url or "issnl" in url:
+        continue
+
+    if url == "":
         continue
 
     dir = name.split("-")[0]
@@ -53,9 +52,8 @@ for i in range(len(df)):
     if os.path.exists(opath) or os.path.exists(opath.replace(".jpg", ".txt")):
         continue
 
-    # print(str(i+1)+"/"+str(len(df))+"\t"+name)
-
     try:
+        print(url)
         download_img(url, opath)
     except:
         time.sleep(0.01)

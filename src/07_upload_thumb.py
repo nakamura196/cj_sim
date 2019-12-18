@@ -9,7 +9,7 @@ s3 = boto3.resource('s3')
 
 files = glob.glob("../images/europeana-*.jpg")
 
-path_w = 'uploaded_list.csv'
+path_w = 'data/uploaded_list_thumb.csv'
 
 rows = []
 

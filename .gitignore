@@ -4,3 +4,5 @@ images/
 src/output
 *.ann
 data/
+output
+__pycache__
