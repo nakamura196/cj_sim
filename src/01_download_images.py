@@ -17,12 +17,12 @@ def download_img(url, file_name):
         with open(file_name, 'wb') as f:
             r.raw.decode_content = True
             shutil.copyfileobj(r.raw, f)
+    else:
+        with open(opath.replace(".jpg", ".txt"), mode='w') as f:
+                f.write("")
+        print("err\t"+opath)
 
-# list_path = '/Users/nakamura/git/d_jps/cj/src/europeana/data/list.json'
-# list_path = '/Users/nakamura/git/d_jps/cj/src/lda/data/list.json'
-# list_path = '/Users/nakamura/git/d_jps/cj/src/dpla/data/list.json'
 list_path = '/Users/nakamura/git/d_jps/cj/src/all/data/list.json'
-# list_path = '/Users/nakamura/git/d_jps/cj/src/js/data/list.json'
 
 with open(list_path) as f:
     df = json.load(f)
@@ -31,8 +31,6 @@ for i in range(len(df)):
     obj = df[i]
 
     url = obj["image"]
-
-    # print("url\t"+url)
 
     if url == "":
         continue
@@ -53,9 +51,8 @@ for i in range(len(df)):
     if os.path.exists(opath) or os.path.exists(opath.replace(".jpg", ".txt")):
         continue
 
-    # print(str(i+1)+"/"+str(len(df))+"\t"+name)
-
     try:
+        print(url)
         download_img(url, opath)
     except:
         time.sleep(0.01)

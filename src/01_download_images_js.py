@@ -17,11 +17,12 @@ def download_img(url, file_name):
         with open(file_name, 'wb') as f:
             r.raw.decode_content = True
             shutil.copyfileobj(r.raw, f)
+    else:
+        with open(file_name.replace(".jpg", ".txt"), mode='w') as f:
+                f.write("")
+        print("err\t"+file_name)
 
-# list_path = '/Users/nakamura/git/d_jps/cj/src/europeana/data/list.json'
-# list_path = '/Users/nakamura/git/d_jps/cj/src/lda/data/list.json'
-# list_path = '/Users/nakamura/git/d_jps/cj/src/dpla/data/list.json'
-# list_path = '/Users/nakamura/git/d_jps/cj/src/all/data/list.json'
+
 list_path = '/Users/nakamura/git/d_jps/cj/src/js/data/list.json'
 
 with open(list_path) as f:
@@ -31,8 +32,6 @@ for i in range(len(df)):
     obj = df[i]
 
     url = obj["image"]
-
-    # print("url\t"+url)
 
     name = obj["_id"].split("/")[-1].split("#")[0]
 
@@ -50,6 +49,12 @@ for i in range(len(df)):
     opath = "/Users/nakamura/git/thumbnail/"+dir+"/"+name+".jpg"
 
     if os.path.exists(opath) or os.path.exists(opath.replace(".jpg", ".txt")):
+        continue
+
+    if "data.ukiyo-e.org/metro/scaled" in url:
+        with open(opath.replace(".jpg", ".txt"), mode='w') as f:
+                f.write("")
+        print("err\t"+opath)
         continue
 
     try:
