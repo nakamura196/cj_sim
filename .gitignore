@@ -6,5 +6,5 @@ images/
 src/output
 *.ann
 data/
-output
+# output
 __pycache__
