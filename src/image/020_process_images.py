@@ -43,19 +43,20 @@ import yaml
 with open('../../.env.yml') as file:
     yml = yaml.load(file, Loader=yaml.SafeLoader)
 
-output_dir = yml["json_dir"].replace("/json", "/output_vis")
+output_dir = yml["json_dir"].replace("/json", "/output")
 input_dir = yml["json_dir"].replace("/json", "/thumbnail")
 
 # configure command line interface arguments
 flags = tf.app.flags
 flags.DEFINE_string('model_dir', 'tmp', 'The location of downloaded imagenet model')
-flags.DEFINE_string('image_files', input_dir+'/[!dignl]*/*.jpg', 'A glob path of images to process')
+flags.DEFINE_string('image_files', input_dir+'/[!dignl][!cobas][!arc][!issnl][!iiifman][!utokyo_da]*/*.jpg', 'A glob path of images to process')
 flags.DEFINE_integer('clusters', 20, 'The number of clusters to display in the image browser')
 flags.DEFINE_boolean('validate_images', False, 'Whether to validate images before processing')
 flags.DEFINE_string('output_folder', output_dir, 'The folder where output files will be stored')
 flags.DEFINE_string('layout', 'umap', 'The layout method to use {umap|tsne}')
 FLAGS = flags.FLAGS
 
+load_path = "tate*"
 
 class PixPlot:
   def __init__(self, image_glob):
@@ -76,11 +77,14 @@ class PixPlot:
     self.rewrite_atlas_files = True
     self.validate_inputs(FLAGS.validate_images)
     self.create_output_dirs()
+    '''
     self.create_image_thumbs()
     self.create_image_vectors()
-    # self.load_image_vectors()
-    # self.write_json()
-    # self.create_atlas_files()
+    '''
+
+    self.load_image_vectors()
+    self.write_json()
+    self.create_atlas_files()
     print('Processed output for ' + \
       str(len(self.image_files) - len(self.errored_images)) + ' images')
 
@@ -231,7 +235,7 @@ class PixPlot:
     Return all image vectors
     '''
     print(' * loading image vectors')
-    self.vector_files = glob( join(self.output_dir, 'image_vectors', '*') )
+    self.vector_files = glob( join(self.output_dir, 'image_vectors', load_path) )
     for c, i in enumerate(self.vector_files):
       try:
         self.image_vectors.append(np.load(i))
