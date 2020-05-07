@@ -56,7 +56,7 @@ flags.DEFINE_string('output_folder', output_dir, 'The folder where output files 
 flags.DEFINE_string('layout', 'umap', 'The layout method to use {umap|tsne}')
 FLAGS = flags.FLAGS
 
-load_path = "tate*"
+load_path = "dpla*"
 
 class PixPlot:
   def __init__(self, image_glob):
